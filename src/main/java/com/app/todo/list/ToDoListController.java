@@ -12,10 +12,15 @@ import java.util.Set;
 @RestController
 public class ToDoListController {
 
+    private final ToDoListService service;
+
+    public ToDoListController(ToDoListService service) {
+        this.service = service;
+    }
+
     @PostMapping("/list")
     public ResponseEntity<String> addToDoList(@Valid @RequestBody ToDoList list) {
-        // TODO: Save todo list here
-
+        service.addToDoList(list);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("{id}")
                 .buildAndExpand(list.getId())
@@ -25,23 +30,19 @@ public class ToDoListController {
     }
 
     @PutMapping("/list")
-    public ResponseEntity<String> updateToDoList(@PathVariable int id, @RequestParam String name) {
-        // TODO: update here
-
+    public ResponseEntity<String> updateToDoList(@PathVariable long id, @RequestParam String name) {
+        service.updateToDoList(id, name);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/list")
     public Set<ToDoList> findAllToLists() {
-        // TODO: find all todo lists here
-
-        return new HashSet<>();
+        return service.findAllToDoLists();
     }
 
     @DeleteMapping("/list")
-    public ResponseEntity<String> deleteToDoList(@PathVariable int id) {
-        // TODO:  delete todo here
-
+    public ResponseEntity<String> deleteToDoList(@PathVariable long id) {
+        service.deleteToDoList(id);
         return ResponseEntity.noContent().build();
     }
 }
