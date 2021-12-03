@@ -2,26 +2,37 @@ package com.app.todo.list;
 
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Service
 public class ToDoListService {
 
-    public void addToDoList(ToDoList list) {
+    private final ToDoListRepository repository;
 
+    public ToDoListService(ToDoListRepository repository) {
+        this.repository = repository;
     }
 
-    public void updateToDoList(long id, String name) {
-
+    public boolean saveToDoList(ToDoList list) {
+        if (repository.existsById(list.getId())) {
+            // do not insert if entity already exists
+            return false;
+        }
+        else {
+            repository.save(list);
+            return true;
+        }
     }
 
-    public Set<ToDoList> findAllToDoLists() {
-        return new HashSet<>();
+    public void updateToDoList(ToDoList list) {
+        repository.save(list);
+    }
+
+    public List<ToDoList> findAllToDoLists() {
+        return repository.findAll();
     }
 
     public void deleteToDoList(long id) {
-
+        repository.deleteById(id);
     }
-
 }

@@ -1,13 +1,13 @@
 package com.app.todo.list;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @RestController
 public class ToDoListController {
@@ -19,24 +19,28 @@ public class ToDoListController {
     }
 
     @PostMapping("/list")
-    public ResponseEntity<String> addToDoList(@Valid @RequestBody ToDoList list) {
-        service.addToDoList(list);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("{id}")
-                .buildAndExpand(list.getId())
-                .toUri();
+    public ResponseEntity<String> saveToDoList(@Valid @RequestBody ToDoList list) {
+        boolean isCreated = service.saveToDoList(list);
 
-        return ResponseEntity.created(location).build();
+        if (isCreated) {
+            URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                    .path("{id}")
+                    .buildAndExpand(list.getId())
+                    .toUri();
+
+            return ResponseEntity.created(location).build();
+        }
+        else return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 
     @PutMapping("/list")
-    public ResponseEntity<String> updateToDoList(@PathVariable long id, @RequestParam String name) {
-        service.updateToDoList(id, name);
+    public ResponseEntity<String> updateToDoList(ToDoList list) {
+        service.updateToDoList(list);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/list")
-    public Set<ToDoList> findAllToLists() {
+    public List<ToDoList> findAllToLists() {
         return service.findAllToDoLists();
     }
 
