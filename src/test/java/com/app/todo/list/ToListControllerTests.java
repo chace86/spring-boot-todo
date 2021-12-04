@@ -9,11 +9,16 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(ToDoListController.class)
@@ -66,5 +71,53 @@ public class ToListControllerTests {
                         .content(TEST_LIST_STRING)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isConflict());
+    }
+
+    @Test
+    void testUpdateToDoList() throws Exception {
+        given(service.updateToDoList(1, "example"))
+                .willReturn(true);
+
+        mockMvc.perform(put("/list/{id}", 1).param("title", "example"))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void testUpdateToDoListNotFound() throws Exception {
+        given(service.updateToDoList(1, "example"))
+                .willReturn(false);
+
+        mockMvc.perform(put("/list/{id}", 1).param("title", "example"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void testFindAllListsByUsername() throws Exception {
+        List<ToDoList> list = new ArrayList<>();
+        list.add(TEST_LIST);
+        given(service.findAllToDoListsByUsername("canderson"))
+                .willReturn(list);
+
+        mockMvc.perform(get("/list/{username}", "canderson"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(mapper.writeValueAsString(list)));
+    }
+
+    @Test
+    void testDeleteToDoList() throws Exception {
+        given(service.deleteToDoList(1))
+                .willReturn(true);
+
+        mockMvc.perform(delete("/list/{id}", 1))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void testDeleteToDoListNotFound() throws Exception {
+        given(service.deleteToDoList(1))
+                .willReturn(false);
+
+        mockMvc.perform(delete("/list/{id}", 1))
+                .andExpect(status().isNotFound());
     }
 }
