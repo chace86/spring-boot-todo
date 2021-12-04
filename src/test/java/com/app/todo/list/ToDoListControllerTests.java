@@ -1,7 +1,6 @@
 package com.app.todo.list;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -12,9 +11,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -22,7 +19,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(ToDoListController.class)
-public class ToListControllerTests {
+public class ToDoListControllerTests {
 
     private static final ToDoList TEST_LIST = new ToDoList(1, "canderson", "shopping", null);
     private static final String TEST_LIST_STRING = "{\"id\":1,\"username\":\"canderson\",\"title\":\"shopping\",\"items\":null}";
@@ -34,14 +31,10 @@ public class ToListControllerTests {
     @Autowired
     private ObjectMapper mapper;
 
-    @BeforeEach
-    void setup() {
-        given(service.saveToDoList(TEST_LIST))
-                .willReturn(true);
-    }
-
     @Test
     void testSaveToDoList() throws Exception {
+        given(service.saveToDoList(TEST_LIST))
+                .willReturn(true);
 
         mockMvc.perform(post("/list")
                 .content(TEST_LIST_STRING)
