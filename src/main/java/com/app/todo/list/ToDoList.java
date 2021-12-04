@@ -20,5 +20,5 @@ public class ToDoList {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
     @NotBlank String name;
-    @OneToMany(mappedBy = "ToDoListItem") Set<ToDoListItem> items;
+    @OneToMany(mappedBy = "list") Set<ToDoListItem> items;
 }
