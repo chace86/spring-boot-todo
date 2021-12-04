@@ -10,6 +10,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
+@RequestMapping("/list")
 public class ToDoListController {
 
     private final ToDoListService service;
@@ -18,7 +19,7 @@ public class ToDoListController {
         this.service = service;
     }
 
-    @PostMapping("/list")
+    @PostMapping
     public ResponseEntity<String> saveToDoList(@Valid @RequestBody ToDoList list) {
         boolean isCreated = service.saveToDoList(list);
 
@@ -33,18 +34,18 @@ public class ToDoListController {
         else return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 
-    @PutMapping("/list")
-    public ResponseEntity<String> updateToDoList(ToDoList list) {
+    @PutMapping
+    public ResponseEntity<String> updateToDoList(@Valid @RequestBody ToDoList list) {
         service.updateToDoList(list);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/list")
+    @GetMapping
     public List<ToDoList> findAllToLists() {
         return service.findAllToDoLists();
     }
 
-    @DeleteMapping("/list")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteToDoList(@PathVariable long id) {
         service.deleteToDoList(id);
         return ResponseEntity.noContent().build();
