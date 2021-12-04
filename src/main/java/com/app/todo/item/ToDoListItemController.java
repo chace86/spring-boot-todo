@@ -34,10 +34,10 @@ public class ToDoListItemController {
         else return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 
-    @PutMapping
-    public ResponseEntity<String> updateToDoItem (@Valid @RequestBody ToDoListItem item) {
-        service.saveToDoListItem(item);
-        return ResponseEntity.noContent().build();
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateToDoItem (@PathVariable long id, @RequestParam String description, @RequestParam boolean isCompleted) {
+        boolean isUpdated = service.updateToDoListItem(id, description, isCompleted);
+        return isUpdated ? ResponseEntity.noContent().build() : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/{id}")

@@ -1,5 +1,6 @@
 package com.app.todo.item;
 
+import com.app.todo.list.ToDoList;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -24,8 +25,14 @@ public class ToDoListItemService {
         return isInsertable;
     }
 
-    public void updateToDoListItem(ToDoListItem list) {
-        repository.save(list);
+    public boolean updateToDoListItem(long id, String description, boolean isCompleted) {
+        return repository.findById(id)
+                .map(item -> {
+                    ToDoListItem updatedItem = new ToDoListItem(item.getId(), item.getList(), description, isCompleted);
+                    repository.save(updatedItem);
+                    return true;
+                })
+                .orElse(false);
     }
 
     public Optional<ToDoListItem> findToDoListItem(long id) {
