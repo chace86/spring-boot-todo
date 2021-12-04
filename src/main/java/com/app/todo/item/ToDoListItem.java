@@ -1,4 +1,4 @@
-package com.app.todo.list.item;
+package com.app.todo.item;
 
 import com.app.todo.list.ToDoList;
 import com.fasterxml.jackson.annotation.JsonIgnore;

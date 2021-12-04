@@ -1,4 +1,4 @@
-package com.app.todo.list.item;
+package com.app.todo.item;
 
 import org.springframework.stereotype.Service;
 

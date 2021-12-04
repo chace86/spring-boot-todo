@@ -1,6 +1,6 @@
 package com.app.todo.list;
 
-import com.app.todo.list.item.ToDoListItem;
+import com.app.todo.item.ToDoListItem;
 import lombok.*;
 
 import javax.persistence.*;
