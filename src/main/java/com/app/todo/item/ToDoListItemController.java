@@ -25,7 +25,7 @@ public class ToDoListItemController {
 
         if (isCreated) {
             URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                    .path("{id}")
+                    .path("/{id}")
                     .buildAndExpand(item.getId())
                     .toUri();
 
