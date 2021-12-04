@@ -11,7 +11,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @AutoConfigureMockMvc
 @SpringBootTest
-class TodoApplicationTests {
+class TodoApplicationIntegrationTests {
+
+	// Start app test e2e integration with database
 
 	@Autowired
 	private MockMvc mockMvc;

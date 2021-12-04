@@ -1,6 +1,6 @@
 package com.app.todo.item;
 
-import com.app.todo.list.ToDoList;
+import com.app.todo.list.ToDoListRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -8,42 +8,45 @@ import java.util.Optional;
 @Service
 public class ToDoListItemService {
 
-    private final ToDoListItemRepository repository;
+    private final ToDoListItemRepository itemRepository;
+    private final ToDoListRepository listRepository;
 
-    public ToDoListItemService(ToDoListItemRepository repository) {
-        this.repository = repository;
+    public ToDoListItemService(ToDoListItemRepository itemRepository, ToDoListRepository listRepository) {
+        this.itemRepository = itemRepository;
+        this.listRepository = listRepository;
     }
 
     public boolean saveToDoListItem(ToDoListItem item) {
-
-        boolean isInsertable = !repository.existsById(item.getId());
+        // check that the item does not already exist and that associated list relationship exists
+        boolean isInsertable =
+                !itemRepository.existsById(item.getId()) && listRepository.existsById(item.getList().getId());
 
         if (isInsertable) {
-            repository.save(item);
+            itemRepository.save(item);
         }
 
         return isInsertable;
     }
 
     public boolean updateToDoListItem(long id, String description, boolean isCompleted) {
-        return repository.findById(id)
+        return itemRepository.findById(id)
                 .map(item -> {
                     ToDoListItem updatedItem = new ToDoListItem(item.getId(), item.getList(), description, isCompleted);
-                    repository.save(updatedItem);
+                    itemRepository.save(updatedItem);
                     return true;
                 })
                 .orElse(false);
     }
 
     public Optional<ToDoListItem> findToDoListItem(long id) {
-        return repository.findById(id);
+        return itemRepository.findById(id);
     }
 
     public boolean deleteToDoListItem(long id) {
-        boolean isPresent = repository.existsById(id);
+        boolean isPresent = itemRepository.existsById(id);
 
         if (isPresent) {
-            repository.deleteById(id);
+            itemRepository.deleteById(id);
         }
 
         return isPresent;
