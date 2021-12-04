@@ -1,6 +1,8 @@
 package com.app.todo.list;
 
 import com.app.todo.item.ToDoListItem;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.persistence.*;
@@ -18,6 +20,7 @@ public class ToDoList {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
     @NotBlank
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     String username;
     @NotBlank
     String title;
