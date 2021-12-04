@@ -2,8 +2,6 @@ package com.app.todo.list;
 
 import com.app.todo.list.item.ToDoListItem;
 import lombok.*;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -20,7 +18,9 @@ public class ToDoList {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
     @NotBlank
-    String name;
+    String username;
+    @NotBlank
+    String title;
     @OneToMany(mappedBy = "list")
     Set<ToDoListItem> items;
 }

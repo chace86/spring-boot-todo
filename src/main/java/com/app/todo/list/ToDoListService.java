@@ -28,8 +28,8 @@ public class ToDoListService {
         repository.save(list);
     }
 
-    public List<ToDoList> findAllToDoLists() {
-        return repository.findAll();
+    public List<ToDoList> findAllToDoListsByUsername(String username) {
+        return repository.findAllToDoListsByUsername(username);
     }
 
     public void deleteToDoList(long id) {

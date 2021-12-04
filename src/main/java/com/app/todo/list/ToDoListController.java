@@ -40,9 +40,9 @@ public class ToDoListController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping
-    public List<ToDoList> findAllToLists() {
-        return service.findAllToDoLists();
+    @GetMapping("/{username}")
+    public List<ToDoList> findAllToListsByUsername(@PathVariable String username) {
+        return service.findAllToDoListsByUsername(username);
     }
 
     @DeleteMapping("/{id}")
