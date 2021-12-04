@@ -14,14 +14,14 @@ public class ToDoListItemService {
     }
 
     public boolean saveToDoListItem(ToDoListItem item) {
-        if (repository.existsById(item.getId())) {
-            // do not insert if entity already exists
-            return false;
-        }
-        else {
+
+        boolean isInsertable = !repository.existsById(item.getId());
+
+        if (isInsertable) {
             repository.save(item);
-            return true;
         }
+
+        return isInsertable;
     }
 
     public void updateToDoListItem(ToDoListItem list) {
@@ -32,7 +32,13 @@ public class ToDoListItemService {
         return repository.findById(id);
     }
 
-    public void deleteToDoListItem(long id) {
-        repository.deleteById(id);
+    public boolean deleteToDoListItem(long id) {
+        boolean isPresent = repository.existsById(id);
+
+        if (isPresent) {
+            repository.deleteById(id);
+        }
+
+        return isPresent;
     }
 }

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -25,6 +26,6 @@ public class ToDoList {
     String username;
     @NotBlank
     String title;
-    @OneToMany(mappedBy = "list")
+    @OneToMany(mappedBy = "list", cascade = CascadeType.REMOVE)
     Set<ToDoListItem> items;
 }

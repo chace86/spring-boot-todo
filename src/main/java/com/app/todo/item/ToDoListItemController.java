@@ -49,7 +49,7 @@ public class ToDoListItemController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteToDoListItem(@PathVariable long id) {
-        service.deleteToDoListItem(id);
-        return ResponseEntity.noContent().build();
+        boolean isDeleted = service.deleteToDoListItem(id);
+        return isDeleted ? ResponseEntity.noContent().build() : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

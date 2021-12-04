@@ -34,10 +34,10 @@ public class ToDoListController {
         else return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 
-    @PutMapping
-    public ResponseEntity<String> updateToDoList(@Valid @RequestBody ToDoList list) {
-        service.updateToDoList(list);
-        return ResponseEntity.noContent().build();
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateToDoList(@PathVariable long id, @RequestParam String title) {
+        boolean isUpdated = service.updateToDoList(id, title);
+        return isUpdated ? ResponseEntity.noContent().build() : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/{username}")
@@ -47,7 +47,7 @@ public class ToDoListController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteToDoList(@PathVariable long id) {
-        service.deleteToDoList(id);
-        return ResponseEntity.noContent().build();
+        boolean isDeleted = service.deleteToDoList(id);
+        return isDeleted ? ResponseEntity.noContent().build() : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

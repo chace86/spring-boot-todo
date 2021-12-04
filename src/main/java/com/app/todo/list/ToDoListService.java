@@ -14,25 +14,36 @@ public class ToDoListService {
     }
 
     public boolean saveToDoList(ToDoList list) {
-        if (repository.existsById(list.getId())) {
-            // do not insert if entity already exists
-            return false;
-        }
-        else {
+        boolean isInsertable = !repository.existsById(list.getId());
+
+        if (isInsertable) {
             repository.save(list);
-            return true;
         }
+
+        return isInsertable;
     }
 
-    public void updateToDoList(ToDoList list) {
-        repository.save(list);
+    public boolean updateToDoList(long id, String title) {
+        return repository.findById(id)
+                .map(list -> {
+                    ToDoList updatedList = new ToDoList(list.getId(), list.getUsername(), title, list.getItems());
+                    repository.save(updatedList);
+                    return true;
+                })
+                .orElse(false);
     }
 
     public List<ToDoList> findAllToDoListsByUsername(String username) {
         return repository.findAllToDoListsByUsername(username);
     }
 
-    public void deleteToDoList(long id) {
-        repository.deleteById(id);
+    public boolean deleteToDoList(long id) {
+        boolean isPresent = repository.existsById(id);
+
+        if (isPresent) {
+            repository.deleteById(id);
+        }
+
+        return isPresent;
     }
 }

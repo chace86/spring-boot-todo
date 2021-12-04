@@ -22,7 +22,7 @@ public class ToDoListItem {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
-    @ManyToOne @JoinColumn(name = "todo_list_id", nullable = false, referencedColumnName = "id")
+    @ManyToOne @JoinColumn(name = "todo_list_id", nullable = false)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @NotNull
     ToDoList list;
